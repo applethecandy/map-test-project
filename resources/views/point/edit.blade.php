@@ -12,7 +12,6 @@
             <form method="POST" action="{{ route('point.update', compact('point')) }}">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                 <div class="space-y-6 p-6">
                     <div class="mb-6">
                         <label for="name" class="mb-2 block text-sm font-medium text-gray-900">Название

@@ -59,4 +59,11 @@ class PointRequest extends FormRequest
             'longitude.numeric' => 'Долгота должна быть в формате "12.345678"',
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => $this->user()->id,
+        ]);
+    }
 }

@@ -71,6 +71,8 @@ class PointController extends Controller
      */
     public function update(PointRequest $request, Point $point)
     {
+        if ($point->user_id != Auth::user()->id)
+            return back()->withErrors(['Вы не можете редактировать чужую точку']);
         $point->update($request->validated());
         return back();
     }
@@ -83,6 +85,6 @@ class PointController extends Controller
      */
     public function destroy(Point $point)
     {
-        return $point->delete();
+        return $point->user_id == Auth::user()->id ? $point->delete() : null;
     }
 }
