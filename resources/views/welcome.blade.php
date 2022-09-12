@@ -6,9 +6,9 @@
         <x-map />
     </div>
 
-    <div id="modal"></div>
-
-    @if ($errors->any())
-        <x-error-modal :errors="$errors" />
-    @endif
+    <div id="modal">
+        @if ($errors->any())
+            <x-error-modal :errors="$errors" />
+        @endif
+    </div>
 @endsection
