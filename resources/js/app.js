@@ -3,18 +3,42 @@ import './bootstrap';
 ymaps.ready(function () {
     var map = new ymaps.Map('map', {
         center: [55.753994, 37.622093],
-        zoom: 12,
+        zoom: 10
     });
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                map.setCenter([position.coords.latitude, position.coords.longitude]);
-            },
-            error => {
-                alert(error.message);
+
+    if (window.sessionStorage.getItem('position') === null) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    window.sessionStorage.setItem('position', [position.coords.latitude, position.coords.longitude])
+                    setPosition()
+                },
+                error => {
+                    window.sessionStorage.setItem('position', 'false')
+                    setPosition()
+                }
+            );
+        }
+    } else { setPosition() }
+
+    function setPosition() {
+        if (window.sessionStorage.getItem('position') === 'false') {
+            ymaps.geolocation.get({
+                provider: 'yandex',
+                mapStateAutoApply: true
+            }).then(function (result) {
+                map.setCenter(result.geoObjects.position);
             });
+        } else if (window.sessionStorage.getItem('position') != null) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    map.setCenter([position.coords.latitude, position.coords.longitude]);
+                });
+        }
     }
+
+
 
     axios.get('/api/points')
         .then(function (response) {
